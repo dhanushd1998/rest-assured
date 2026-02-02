@@ -1,7 +1,14 @@
 import static io.restassured.RestAssured.*;
+
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
 import org.testng.Assert;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -34,5 +41,65 @@ public class APITests {
                 .body("data.first_name", hasItems("Michael", "Tobias"))
                 .log().all();
     }
+    @Test
+    public void post_demo1() {
+        JSONObject obj = new JSONObject();
+        obj.put("first_name", "dhanush");
+
+        given()
+                .header("x-api-key", "reqres_3bf9d9b1de804d7c8c07cd0f095e9090")
+                .contentType(ContentType.JSON)
+                .body(obj.toJSONString())
+                .when()
+                .post("https://reqres.in/api/users")
+                .then()
+                .log().all()
+                .statusCode(201);
+    }
+    @Test
+    void put_demo2(){
+        JSONObject obj = new JSONObject();
+        obj.put("first_name", "meghana");
+        obj.put("last_name", "dhanush");
+        given()
+                .header("x-api-key", "reqres_3bf9d9b1de804d7c8c07cd0f095e9090")
+                .contentType(ContentType.JSON)
+                .body(obj.toJSONString())
+                .when()
+                .put("https://reqres.in/api/users/2")
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+
+    @Test
+    void patch_demo2(){
+        JSONObject obj = new JSONObject();
+        obj.put("first_name", "meghana");
+        obj.put("last_name", "dhanush");
+        given()
+                .header("x-api-key", "reqres_3bf9d9b1de804d7c8c07cd0f095e9090")
+                .contentType(ContentType.JSON)
+                .body(obj.toJSONString())
+                .when()
+                .patch("https://reqres.in/api/users/2")
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+    @Test
+    void delete_demo2(){
+        given()
+                .header("x-api-key", "reqres_3bf9d9b1de804d7c8c07cd0f095e9090")
+                .when()
+                .delete("https://reqres.in/api/users/1")
+                .then()
+                .statusCode(204)
+                .log().all();
+
+    }
+
 
 }
