@@ -1,7 +1,9 @@
 import static io.restassured.RestAssured.*;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.codehaus.groovy.transform.SourceURIASTTransformation;
 import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
 import org.testng.Assert;
@@ -99,6 +101,33 @@ public class APITests {
                 .statusCode(204)
                 .log().all();
 
+    }
+
+
+    @Test
+    void test1(){
+        Response response = RestAssured
+                .get("https://reqres.in/api/users/2");
+        given()
+                .header("x-api-key", "reqres_3bf9d9b1de804d7c8c07cd0f095e9090");
+        System.out.println( "STATUS CODE"  +response.getStatusCode());
+        System.out.println( "RESPONSE"  +response.asString());
+        System.out.println( "BODY"  +response.getBody().asString());
+        System.out.println( "TIME TAKEN"  +response.getTime());
+        System.out.println( "HEADER Content-Type"  +response.getHeader("Content-Type"));
+
+        int statusCode = response.getStatusCode();
+        Assert.assertEquals(statusCode, 200, "Expected HTTP status 200");
+
+
+    }
+    @Test
+    void test2(){
+        given()
+                .header("x-api-key", "reqres_3bf9d9b1de804d7c8c07cd0f095e9090")
+                .get("https://reqres.in/api/users?page=2")
+                .then()
+                .statusCode(200);
     }
 
 
